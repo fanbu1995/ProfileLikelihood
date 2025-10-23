@@ -108,7 +108,7 @@ batch_data <- data.frame(
 
 # 1b Load example LPs from EUMAEUS study
 load("data/CCAE_HC_profiles.RData")
-batch_data <- exampleLPs[, c("exposure_id", "outcome_id", "period_id", "point", "value")]
+batch_data <- exampleLPs[1:5, c("exposure_id", "outcome_id", "period_id", "point", "value")]
 
 # 2. Create the batch processing function
 loglik_batch_func <- create_loglikelihood_batch_function(batch_data)
