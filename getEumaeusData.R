@@ -43,4 +43,22 @@ names(exampleLPs) = tolower(names(exampleLPs))
 glimpse(exampleLPs)
 save(exampleLPs, file = "data/CCAE_HC_profiles.RData")
 
+# get data for more exposures
+exposures = c(21184, 21185, 211983, 211833)
+sql <- "SELECT * FROM eumaeus.likelihood_profile
+        WHERE method = 'HistoricalComparator'
+              AND database_id = 'CCAE'
+              AND analysis_id = 1
+              AND exposure_id IN (@exposures)
+              AND outcome_id IN (@outcomeIds);"
+sql <- SqlRender::render(sql, 
+                         exposures = exposures,
+                         outcomeIds = NC_outcome_ids)
+sql <- SqlRender::translate(sql, targetDialect = connection@dbms)
+exampleLPs <- DatabaseConnector::querySql(connection, sql)
+names(exampleLPs) = tolower(names(exampleLPs))
+
+glimpse(exampleLPs)
+save(exampleLPs, file = "data/CCAE_HC_profiles_4vax.RData")
+
 disconnect(connection)
